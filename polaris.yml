@@ -1,7 +1,7 @@
 version: "1"
 project: 
-  branch: $GITHUB_HEAD_REF
-  name: SHELNA-BRANCH-SCAN
+  branch: ${scm.git.branch}
+  name: SHELNA-BRANCH-SCAN-NODEJS
   revision: 
     date: ${scm.git.commit.date}
     modified: true
