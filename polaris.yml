@@ -1,6 +1,6 @@
 version: "1"
 project: 
-  branch: ${scm.git.branch}
+  branch: $GITHUB_HEAD_REF
   name: SHELNA-BRANCH-SCAN
   revision: 
     date: ${scm.git.commit.date}
