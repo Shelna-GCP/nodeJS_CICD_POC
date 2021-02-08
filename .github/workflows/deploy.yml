@@ -142,7 +142,9 @@ jobs:
           export POLARIS_ACCESS_TOKEN=${{ secrets.POLARIS_ACCESS_TOKEN}}
           wget -q https://ikea.polaris.synopsys.com/api/tools/polaris_cli-linux64.zip
           unzip -j polaris_cli-linux64.zip -d /tmp
-          export GIT_BRANCH="env-feature_SAST_report"
+          if [[ "${{github.event_name}}" == "pull_request" ]]; then
+            export GIT_BRANCH="context-feature_SAST_report"
+          if
           mkdir /tmp/output
           /tmp/polaris -c polaris.yml analyze -w --coverity-ignore-capture-failure | tee /tmp/output/polaris-output_${GITHUB_SHA}.txt
 
