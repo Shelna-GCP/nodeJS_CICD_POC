@@ -1,5 +1,5 @@
 'use strict';
-// Main file
+// feature file
 const express = require('express');
 
 // Constants
