@@ -143,9 +143,8 @@ jobs:
           wget -q https://ikea.polaris.synopsys.com/api/tools/polaris_cli-linux64.zip
           unzip -j polaris_cli-linux64.zip -d /tmp
           export GIT_BRANCH= "env-feature_SAST_report"
-          echo $GIT_BRANCH
           mkdir /tmp/output
-          /tmp/polaris --co project.branch=${{GIT_BRANCH}} -c polaris.yml analyze -w --coverity-ignore-capture-failure | tee /tmp/output/polaris-output_${GITHUB_SHA}.txt
+          /tmp/polaris -c polaris.yml analyze -w --coverity-ignore-capture-failure | tee /tmp/output/polaris-output_${GITHUB_SHA}.txt
 
       #Upload the polaris scan results to gcp cloud storage bucket
       - id: upload-file
