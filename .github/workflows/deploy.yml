@@ -1,4 +1,4 @@
-# .github/workflows/deploy.yaml nodejs app
+# .github/workflows/deploy.yaml nodejs app-feature
 name: Build and Push to DockerHub
 on:
   pull_request:
