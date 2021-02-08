@@ -38,7 +38,7 @@ jobs:
         run: npm test
         continue-on-error: true
       - uses: act10ns/slack@v1
-           with:
+        with:
             status: ${{ job.status }}
             steps: ${{ toJson(steps) }}
             slack_webhook_url: ${{ secrets.SLACK_WEBHOOK_URL }}
