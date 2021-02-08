@@ -148,7 +148,7 @@ jobs:
           fi
           echo $GIT_BRANCH
           mkdir /tmp/output
-          /tmp/polaris --co project.branch=GIT_BRANCH -c polaris.yml analyze -w --coverity-ignore-capture-failure | tee /tmp/output/polaris-output_${GITHUB_SHA}.txt
+          /tmp/polaris --co project.branch=${{GIT_BRANCH}} -c polaris.yml analyze -w --coverity-ignore-capture-failure | tee /tmp/output/polaris-output_${GITHUB_SHA}.txt
 
       #Upload the polaris scan results to gcp cloud storage bucket
       - id: upload-file
