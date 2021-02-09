@@ -1,12 +1,9 @@
 # .github/workflows/deploy.yaml nodejs app try
 name: Build and Push to DockerHub
 on:
-  pull_request:
-    branches:
-      - main
   push:
     branches:
-      - main
+      - stage
 jobs:
   build:
     name: VAULT DEMO PIPELINE
