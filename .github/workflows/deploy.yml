@@ -194,6 +194,9 @@ jobs:
             Issues found: ${{steps.polaris_result.outputs.issues}}
             Summary: ${{steps.polaris_result.outputs.summary-url}}
           edit-mode: replace
+      - name: Exit Pipeline
+        if: ${{ steps.polaris_result.outputs.issues > 0 }}
+        run: exit 1  
           
   Blackduck-SCA:
     name: "Blackduck SCA"
