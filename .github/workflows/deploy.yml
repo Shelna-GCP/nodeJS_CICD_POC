@@ -153,11 +153,8 @@ jobs:
           /tmp/polaris -c polaris.yml analyze -w --coverity-ignore-capture-failure | tee /tmp/output/polaris-output_${GITHUB_SHA}.txt
 
       - if: ${{steps.polaris_scan}}
-        name: Polaris Result
-        id: polaris_result
+        name: Exit Polaris Pipeline
         run: |
-          #cat ./.synopsys/polaris/cli-scan.json | jq '.issueSummary'
-          echo "##[set-output name=issues;]$(cat ./.synopsys/polaris/cli-scan.json | jq '.issueSummary.total' )"
           if [[ $(cat ./.synopsys/polaris/cli-scan.json | jq '.issueSummary.total' ) > 0 ]]; then
             exit 1
           fi 
