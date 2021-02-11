@@ -137,6 +137,7 @@ jobs:
     steps:        
       - uses: actions/checkout@v2       
       - name: Static Analysis with Polaris
+        id: polaris_scan
         shell : bash 
         env:
             GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}            
@@ -151,14 +152,13 @@ jobs:
           mkdir /tmp/output
           /tmp/polaris -c polaris.yml analyze -w --coverity-ignore-capture-failure | tee /tmp/output/polaris-output_${GITHUB_SHA}.txt
 
-      #Upload the polaris scan results to gcp cloud storage bucket
-      - id: upload-file
-        uses: google-github-actions/upload-cloud-storage@main
-        with:
-          credentials: ${{ secrets.GOOGLE_CREDENTIALS }}
-          path: /home/runner/work/nodeJS_CICD_POC/nodeJS_CICD_POC/.synopsys/polaris/cli-scan.json
-          destination: testsplunk
-   
+      - if: ${{steps.polaris_scan}}
+        name: Exit Polaris Pipeline
+        run: |
+          if [[ $(cat ./.synopsys/polaris/cli-scan.json | jq '.issueSummary.total' ) > 0 ]]; then
+            exit 1
+          fi 
+          
   Blackduck-SCA:
     name: "Blackduck SCA"
     # needs: build
@@ -171,11 +171,11 @@ jobs:
       - name: Software Composition Analysis with Black Duck
         uses: blackducksoftware/github-action@v2
         with:
-          args: '--blackduck.url="${{ secrets.BLACKDUCK_URL}}" --blackduck.api.token="${{ secrets.BLACKDUCK_API_TOKEN}}" --detect.tools="DETECTOR" --logging.level.com.synopsys.integration="DEBUG" --detect.risk.report.pdf=true --detect.cleanup=false'
+          args: '--blackduck.url="${{ secrets.BLACKDUCK_URL}}" --blackduck.api.token="${{ secrets.BLACKDUCK_API_TOKEN}}" --detect.tools="DETECTOR" --logging.level.com.synopsys.integration="DEBUG" --detect.policy.check.fail.on.severities="ALL"'
           
-      - id: upload-file
-        uses: google-github-actions/upload-cloud-storage@main
-        with:
-          credentials: ${{ secrets.GOOGLE_CREDENTIALS }}
-          path: /home/runner/work/nodeJS_CICD_POC/nodeJS_CICD_POC/docker_web_app_0_0_1_BlackDuck_RiskReport.pdf
-          destination: blackduckreport  
+#       - id: upload-file
+#         uses: google-github-actions/upload-cloud-storage@main
+#         with:
+#           credentials: ${{ secrets.GOOGLE_CREDENTIALS }}
+#           path: /home/runner/work/nodeJS_CICD_POC/nodeJS_CICD_POC/docker_web_app_0_0_1_BlackDuck_RiskReport.pdf
+#           destination: blackduckreport  
