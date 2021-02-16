@@ -1,4 +1,4 @@
-# .github/workflows/deploy.yaml nodejs app try changes
+# .github/workflows/deploy.yaml nodejs app try changes.
 name: Build and Push to DockerHub
 on:
   pull_request:
