@@ -149,7 +149,7 @@ jobs:
             export GIT_BRANCH="feature_SAST_report"
           fi
           mkdir /tmp/output
-          /tmp/polaris -c polaris.yml analyze -w --coverity-ignore-capture-failure | tee /tmp/output/polaris-output_${GITHUB_SHA}.txt
+          /tmp/polaris -c polaris.yml analyze -w | tee /tmp/output/polaris-output_${GITHUB_SHA}.txt
 
       #Upload the polaris scan results to gcp cloud storage bucket
       - id: upload-file
